@@ -236,104 +236,152 @@ contract Peg {
     }
 
 
-    // WARNING! UGLY HACK.
+    // WARNING! * UPDATED * UGLY HACK.
     // Our bytes library. lol 
     // This is ugly code smell and probably not how bytes should be handled in Solidity.
-    // TODO: Clean this mess up!
+    // Done: Refactor for better efficiency and readability.
     uint256 cursor = 0; 
-
-    function readUint8(bytes memory _bytes)  internal returns (uint8) {
-        require(_bytes.length >= cursor + 1 , "toUint8_outOfBounds");
+    
+    /**
+     * @dev Reads a uint8 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The uint8 value read from the byte array.
+     */
+    function readUint8(bytes memory _bytes) internal returns (uint8) {
+        require(_bytes.length >= cursor + 1, "toUint8_outOfBounds");
         uint8 tempUint;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempUint := mload(add(add(_bytes, 0x1), _cursor))
         }
-
+    
         cursor += 1;
         return tempUint;
     }
-
-    function readUint16(bytes memory _bytes)  internal returns (uint16) {
+    
+    /**
+     * @dev Reads a uint8 value from the provided byte array at the specified cursor position.
+     * @param _bytes The byte array to read from.
+     * @param _cursor The cursor position to start reading from.
+     * @return The uint8 value read from the byte array.
+     */
+    function readUint8(bytes memory _bytes, uint256 _cursor) internal pure returns (uint8) {
+        require(_bytes.length >= _cursor + 1, "Out of bounds");
+        uint8 value;
+        assembly {
+            value := mload(add(add(_bytes, 0x1), _cursor))
+        }
+        return value;
+    }
+    
+    /**
+     * @dev Reads a uint16 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The uint16 value read from the byte array.
+     */
+    function readUint16(bytes memory _bytes) internal returns (uint16) {
         require(_bytes.length >= cursor + 2, "toUint16_outOfBounds");
         uint16 tempUint;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempUint := mload(add(add(_bytes, 0x2), _cursor))
         }
-
+    
         cursor += 2;
         return tempUint;
     }
-
-    function readUint32(bytes memory _bytes)  internal returns (uint32) {
+    
+    /**
+     * @dev Reads a uint32 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The uint32 value read from the byte array.
+     */
+    function readUint32(bytes memory _bytes) internal returns (uint32) {
         require(_bytes.length >= cursor + 4, "toUint32_outOfBounds");
         uint32 tempUint;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempUint := mload(add(add(_bytes, 0x4), _cursor))
         }
-
+    
         cursor += 4;
         return tempUint;
     }
-
-    function readUint64(bytes memory _bytes)  internal returns (uint64) {
+    
+    /**
+     * @dev Reads a uint64 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The uint64 value read from the byte array.
+     */
+    function readUint64(bytes memory _bytes) internal returns (uint64) {
         require(_bytes.length >= cursor + 8, "toUint64_outOfBounds");
         uint64 tempUint;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempUint := mload(add(add(_bytes, 0x8), _cursor))
         }
-
+    
         cursor += 8;
         return tempUint;
     }
-
-    function readUint160(bytes memory _bytes)  internal returns (uint160) {
+    
+    /**
+     * @dev Reads a uint160 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The uint160 value read from the byte array.
+     */
+    function readUint160(bytes memory _bytes) internal returns (uint160) {
         require(_bytes.length >= cursor + 20, "toUint160_outOfBounds");
         uint160 tempUint;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempUint := mload(add(add(_bytes, 0x14), _cursor))
         }
-
+    
         cursor += 20;
         return tempUint;
     }
-
-    function readUint256(bytes memory _bytes)  internal returns (uint256) {
+    
+    /**
+     * @dev Reads a uint256 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The uint256 value read from the byte array.
+     */
+    function readUint256(bytes memory _bytes) internal returns (uint256) {
         require(_bytes.length >= cursor + 32, "toUint256_outOfBounds");
         uint256 tempUint;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempUint := mload(add(add(_bytes, 0x20), _cursor))
         }
-
+    
         cursor += 32;
         return tempUint;
     }
-
+    
+    /**
+     * @dev Reads a bytes32 value from the provided byte array starting from the current cursor position.
+     * @param _bytes The byte array to read from.
+     * @return The bytes32 value read from the byte array.
+     */
     function readBytes32(bytes memory _bytes) internal returns (bytes32) {
         require(_bytes.length >= cursor + 32, "toBytes32_outOfBounds");
         bytes32 tempBytes32;
-
+    
         uint256 _cursor = cursor;
         assembly {
             tempBytes32 := mload(add(add(_bytes, 0x20), _cursor))
         }
-
+    
         cursor += 32;
         return tempBytes32;
     }
-
-
 
 }
 
